@@ -1,0 +1,124 @@
+{
+    "basePath": "/",
+    "baseUrl": "",
+    "editUrl": "",
+    "logoFile": "logo.svg",
+    "jsFile": "",
+    "toggles": {
+      "showChart": true,
+      "showTagFilter": true,
+      "showQuadrantList": true,
+      "showEmptyRings": false
+    },
+    "sections": ["radar", "tags", "list"],
+    "colors": {
+      "foreground": "#fcf2e6",
+      "background": "#808080",
+      "highlight": "#d4a373",
+      "content": "#fff",
+      "text": "#575757",
+      "link": "#bc6c25",
+      "border": "rgba(255, 255, 255, 0.1)",
+      "tag": "rgba(255, 255, 255, 0.1)"
+    },
+    "quadrants": [
+      {
+        "id": "languages-and-frameworks",
+        "title": "Языки и Фреймворки",
+        "description": "",
+        "color": "#a3b18a"
+      },
+      {
+        "id": "methods-and-patterns",
+        "title": "Практики и Паттерны",
+        "description": "",
+        "color": "#588157"
+      },
+      {
+        "id": "platforms-and-operations",
+        "title": "Платформы",
+        "description": "",
+        "color": "#3f633e"
+      },
+      {
+        "id": "tools",
+        "title": "Инструменты",
+        "description": "",
+        "color": "#40713f"
+      }
+    ],
+    "rings": [
+      {
+        "id": "adopt",
+        "title": "Активно используем",
+        "description": "",
+        "color": "#588157",
+        "radius": 0.5,
+        "strokeWidth": 5
+      },
+      {
+        "id": "trial",
+        "title": "Пробуем",
+        "description": "",
+        "color": "#457b9d",
+        "radius": 0.69,
+        "strokeWidth": 3
+      },
+      {
+        "id": "assess",
+        "title": "Изучаем",
+        "description": "",
+        "color": "#bc6c25",
+        "radius": 0.85,
+        "strokeWidth": 2
+      },
+      {
+        "id": "hold",
+        "title": "Выкидываем",
+        "description": "",
+        "color": "#d62828",
+        "radius": 1,
+        "strokeWidth": 0.75
+      }
+    ],
+    "flags": {
+      "new": {
+        "color": "#f1235a",
+        "title": "Новое",
+        "titleShort": "N",
+        "description": "Новое в этой версии"
+      },
+      "changed": {
+        "color": "#40a7d1",
+        "title": "Изменено",
+        "titleShort": "C",
+        "description": "Недавно менялось"
+      },
+      "default": {
+        "description": "Нет изменений"
+      }
+    },
+    "chart": {
+      "size": 800,
+      "blipSize": 12
+    },
+    "social": [
+    ],
+    "imprint": "",
+    "labels": {
+      "title": "Учебный технический радар",
+      "imprint": "",
+      "quadrant": "Технические области",
+      "quadrantOverview": "Подробнее",
+      "zoomIn": "Приблизить",
+      "filterByTag": "Отфильтровать по тегу",
+      "footer": "Учебный радар в рамках курса Архитектор ПО от Яндекс Практикума",
+      "notUpdated": "Давно не менялось",
+      "notFound": "404",
+      "pageAbout": "Как пользоваться",
+      "pageOverview": "Обзор технологий",
+      "pageSearch": "Поиск",
+      "searchPlaceholder": "Что ищете?",
+      "metaDescription": ""
+    }
+  }
