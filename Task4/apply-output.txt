@@ -1,0 +1,1038 @@
+data.yandex_compute_image.ubuntu: Reading...
+data.yandex_compute_image.ubuntu: Read complete after 0s [id=fd8548a3jsnsqvdksljd]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # yandex_compute_disk.platform_data["kafka"] will be created
+  + resource "yandex_compute_disk" "platform_data" {
+      + block_size  = 4096
+      + created_at  = (known after apply)
+      + folder_id   = "b1gjfhtn0l2tui6nt8p0"
+      + id          = (known after apply)
+      + labels      = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+          + "role"        = "kafka"
+        }
+      + name        = "future20-kafka-data"
+      + product_ids = (known after apply)
+      + size        = 20
+      + status      = (known after apply)
+      + type        = "network-hdd"
+      + zone        = "ru-central1-b"
+
+      + disk_placement_policy (known after apply)
+
+      + hardware_generation (known after apply)
+    }
+
+  # yandex_compute_disk.platform_data["query-engine"] will be created
+  + resource "yandex_compute_disk" "platform_data" {
+      + block_size  = 4096
+      + created_at  = (known after apply)
+      + folder_id   = "b1gjfhtn0l2tui6nt8p0"
+      + id          = (known after apply)
+      + labels      = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+          + "role"        = "query-engine"
+        }
+      + name        = "future20-query-engine-data"
+      + product_ids = (known after apply)
+      + size        = 20
+      + status      = (known after apply)
+      + type        = "network-hdd"
+      + zone        = "ru-central1-a"
+
+      + disk_placement_policy (known after apply)
+
+      + hardware_generation (known after apply)
+    }
+
+  # yandex_compute_instance.bastion will be created
+  + resource "yandex_compute_instance" "bastion" {
+      + created_at                = (known after apply)
+      + folder_id                 = "b1gjfhtn0l2tui6nt8p0"
+      + fqdn                      = (known after apply)
+      + gpu_cluster_id            = (known after apply)
+      + hardware_generation       = (known after apply)
+      + hostname                  = "bastion"
+      + id                        = (known after apply)
+      + labels                    = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + maintenance_grace_period  = (known after apply)
+      + maintenance_policy        = (known after apply)
+      + metadata                  = {
+          + "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          + "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        }
+      + name                      = "future20-bastion"
+      + network_acceleration_type = "standard"
+      + platform_id               = "standard-v3"
+      + reserved_instance_pool_id = (known after apply)
+      + status                    = (known after apply)
+      + zone                      = "ru-central1-a"
+
+      + boot_disk {
+          + auto_delete = true
+          + device_name = (known after apply)
+          + disk_id     = (known after apply)
+          + mode        = (known after apply)
+
+          + initialize_params {
+              + block_size  = (known after apply)
+              + description = (known after apply)
+              + image_id    = "fd8548a3jsnsqvdksljd"
+              + name        = (known after apply)
+              + size        = 20
+              + snapshot_id = (known after apply)
+              + type        = "network-hdd"
+            }
+        }
+
+      + metadata_options (known after apply)
+
+      + network_interface {
+          + index              = (known after apply)
+          + ip_address         = (known after apply)
+          + ipv4               = true
+          + ipv6               = (known after apply)
+          + ipv6_address       = (known after apply)
+          + mac_address        = (known after apply)
+          + nat                = true
+          + nat_ip_address     = (known after apply)
+          + nat_ip_version     = (known after apply)
+          + security_group_ids = (known after apply)
+          + subnet_id          = (known after apply)
+        }
+
+      + placement_policy (known after apply)
+
+      + resources {
+          + core_fraction = 20
+          + cores         = 2
+          + memory        = 2
+        }
+
+      + scheduling_policy {
+          + preemptible = true
+        }
+    }
+
+  # yandex_compute_instance.phi will be created
+  + resource "yandex_compute_instance" "phi" {
+      + created_at                = (known after apply)
+      + folder_id                 = "b1gjfhtn0l2tui6nt8p0"
+      + fqdn                      = (known after apply)
+      + gpu_cluster_id            = (known after apply)
+      + hardware_generation       = (known after apply)
+      + hostname                  = "phi-node"
+      + id                        = (known after apply)
+      + labels                    = {
+          + "contour"     = "phi"
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+          + "role"        = "phi-node"
+        }
+      + maintenance_grace_period  = (known after apply)
+      + maintenance_policy        = (known after apply)
+      + metadata                  = {
+          + "ssh-keys" = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+        }
+      + name                      = "future20-phi-node"
+      + network_acceleration_type = "standard"
+      + platform_id               = "standard-v3"
+      + reserved_instance_pool_id = (known after apply)
+      + status                    = (known after apply)
+      + zone                      = "ru-central1-a"
+
+      + boot_disk {
+          + auto_delete = true
+          + device_name = (known after apply)
+          + disk_id     = (known after apply)
+          + mode        = (known after apply)
+
+          + initialize_params {
+              + block_size  = (known after apply)
+              + description = (known after apply)
+              + image_id    = "fd8548a3jsnsqvdksljd"
+              + name        = (known after apply)
+              + size        = 30
+              + snapshot_id = (known after apply)
+              + type        = "network-ssd"
+            }
+        }
+
+      + metadata_options (known after apply)
+
+      + network_interface {
+          + index              = (known after apply)
+          + ip_address         = (known after apply)
+          + ipv4               = true
+          + ipv6               = (known after apply)
+          + ipv6_address       = (known after apply)
+          + mac_address        = (known after apply)
+          + nat                = false
+          + nat_ip_address     = (known after apply)
+          + nat_ip_version     = (known after apply)
+          + security_group_ids = (known after apply)
+          + subnet_id          = (known after apply)
+        }
+
+      + placement_policy (known after apply)
+
+      + resources {
+          + core_fraction = 20
+          + cores         = 2
+          + memory        = 4
+        }
+
+      + scheduling_policy (known after apply)
+    }
+
+  # yandex_compute_instance.platform["kafka"] will be created
+  + resource "yandex_compute_instance" "platform" {
+      + created_at                = (known after apply)
+      + folder_id                 = "b1gjfhtn0l2tui6nt8p0"
+      + fqdn                      = (known after apply)
+      + gpu_cluster_id            = (known after apply)
+      + hardware_generation       = (known after apply)
+      + hostname                  = "kafka"
+      + id                        = (known after apply)
+      + labels                    = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+          + "role"        = "kafka"
+        }
+      + maintenance_grace_period  = (known after apply)
+      + maintenance_policy        = (known after apply)
+      + metadata                  = {
+          + "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          + "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        }
+      + name                      = "future20-kafka"
+      + network_acceleration_type = "standard"
+      + platform_id               = "standard-v3"
+      + reserved_instance_pool_id = (known after apply)
+      + service_account_id        = (known after apply)
+      + status                    = (known after apply)
+      + zone                      = "ru-central1-b"
+
+      + boot_disk {
+          + auto_delete = true
+          + device_name = (known after apply)
+          + disk_id     = (known after apply)
+          + mode        = (known after apply)
+
+          + initialize_params {
+              + block_size  = (known after apply)
+              + description = (known after apply)
+              + image_id    = "fd8548a3jsnsqvdksljd"
+              + name        = (known after apply)
+              + size        = 30
+              + snapshot_id = (known after apply)
+              + type        = "network-ssd"
+            }
+        }
+
+      + metadata_options (known after apply)
+
+      + network_interface {
+          + index              = (known after apply)
+          + ip_address         = (known after apply)
+          + ipv4               = true
+          + ipv6               = (known after apply)
+          + ipv6_address       = (known after apply)
+          + mac_address        = (known after apply)
+          + nat                = false
+          + nat_ip_address     = (known after apply)
+          + nat_ip_version     = (known after apply)
+          + security_group_ids = (known after apply)
+          + subnet_id          = (known after apply)
+        }
+
+      + placement_policy (known after apply)
+
+      + resources {
+          + core_fraction = 20
+          + cores         = 2
+          + memory        = 4
+        }
+
+      + scheduling_policy (known after apply)
+
+      + secondary_disk {
+          + auto_delete = false
+          + device_name = "data"
+          + disk_id     = (known after apply)
+          + mode        = "READ_WRITE"
+        }
+    }
+
+  # yandex_compute_instance.platform["query-engine"] will be created
+  + resource "yandex_compute_instance" "platform" {
+      + created_at                = (known after apply)
+      + folder_id                 = "b1gjfhtn0l2tui6nt8p0"
+      + fqdn                      = (known after apply)
+      + gpu_cluster_id            = (known after apply)
+      + hardware_generation       = (known after apply)
+      + hostname                  = "query-engine"
+      + id                        = (known after apply)
+      + labels                    = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+          + "role"        = "query-engine"
+        }
+      + maintenance_grace_period  = (known after apply)
+      + maintenance_policy        = (known after apply)
+      + metadata                  = {
+          + "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          + "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        }
+      + name                      = "future20-query-engine"
+      + network_acceleration_type = "standard"
+      + platform_id               = "standard-v3"
+      + reserved_instance_pool_id = (known after apply)
+      + service_account_id        = (known after apply)
+      + status                    = (known after apply)
+      + zone                      = "ru-central1-a"
+
+      + boot_disk {
+          + auto_delete = true
+          + device_name = (known after apply)
+          + disk_id     = (known after apply)
+          + mode        = (known after apply)
+
+          + initialize_params {
+              + block_size  = (known after apply)
+              + description = (known after apply)
+              + image_id    = "fd8548a3jsnsqvdksljd"
+              + name        = (known after apply)
+              + size        = 30
+              + snapshot_id = (known after apply)
+              + type        = "network-ssd"
+            }
+        }
+
+      + metadata_options (known after apply)
+
+      + network_interface {
+          + index              = (known after apply)
+          + ip_address         = (known after apply)
+          + ipv4               = true
+          + ipv6               = (known after apply)
+          + ipv6_address       = (known after apply)
+          + mac_address        = (known after apply)
+          + nat                = false
+          + nat_ip_address     = (known after apply)
+          + nat_ip_version     = (known after apply)
+          + security_group_ids = (known after apply)
+          + subnet_id          = (known after apply)
+        }
+
+      + placement_policy (known after apply)
+
+      + resources {
+          + core_fraction = 20
+          + cores         = 2
+          + memory        = 8
+        }
+
+      + scheduling_policy (known after apply)
+
+      + secondary_disk {
+          + auto_delete = false
+          + device_name = "data"
+          + disk_id     = (known after apply)
+          + mode        = "READ_WRITE"
+        }
+    }
+
+  # yandex_iam_service_account.platform will be created
+  + resource "yandex_iam_service_account" "platform" {
+      + created_at         = (known after apply)
+      + description        = "Сервисный аккаунт узлов платформы данных"
+      + expires_at         = (known after apply)
+      + folder_id          = "b1gjfhtn0l2tui6nt8p0"
+      + id                 = (known after apply)
+      + labels             = (known after apply)
+      + name               = "future20-platform-sa"
+      + service_account_id = (known after apply)
+      + status             = (known after apply)
+    }
+
+  # yandex_iam_service_account.storage will be created
+  + resource "yandex_iam_service_account" "storage" {
+      + created_at         = (known after apply)
+      + description        = "Сервисный аккаунт для доступа к бакету Lakehouse"
+      + expires_at         = (known after apply)
+      + folder_id          = "b1gjfhtn0l2tui6nt8p0"
+      + id                 = (known after apply)
+      + labels             = (known after apply)
+      + name               = "future20-storage-sa"
+      + service_account_id = (known after apply)
+      + status             = (known after apply)
+    }
+
+  # yandex_iam_service_account_static_access_key.storage will be created
+  + resource "yandex_iam_service_account_static_access_key" "storage" {
+      + access_key                   = (known after apply)
+      + created_at                   = (known after apply)
+      + description                  = "Ключ S3 API для доступа к бакету Lakehouse"
+      + encrypted_secret_key         = (known after apply)
+      + id                           = (known after apply)
+      + key_fingerprint              = (known after apply)
+      + output_to_lockbox_version_id = (known after apply)
+      + secret_key                   = (sensitive value)
+      + service_account_id           = (known after apply)
+    }
+
+  # yandex_kms_symmetric_key.data will be created
+  + resource "yandex_kms_symmetric_key" "data" {
+      + created_at          = (known after apply)
+      + default_algorithm   = "AES_256"
+      + deletion_protection = false
+      + description         = "Шифрование бакета Lakehouse и дисков контура медданных"
+      + folder_id           = "b1gjfhtn0l2tui6nt8p0"
+      + id                  = (known after apply)
+      + labels              = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name                = "future20-data-key"
+      + rotated_at          = (known after apply)
+      + rotation_period     = "2160h"
+      + status              = (known after apply)
+      + symmetric_key_id    = (known after apply)
+    }
+
+  # yandex_resourcemanager_folder_iam_member.kms_encrypter will be created
+  + resource "yandex_resourcemanager_folder_iam_member" "kms_encrypter" {
+      + folder_id = "b1gjfhtn0l2tui6nt8p0"
+      + id        = (known after apply)
+      + member    = (known after apply)
+      + role      = "kms.keys.encrypterDecrypter"
+    }
+
+  # yandex_resourcemanager_folder_iam_member.platform_compute will be created
+  + resource "yandex_resourcemanager_folder_iam_member" "platform_compute" {
+      + folder_id = "b1gjfhtn0l2tui6nt8p0"
+      + id        = (known after apply)
+      + member    = (known after apply)
+      + role      = "compute.viewer"
+    }
+
+  # yandex_resourcemanager_folder_iam_member.storage_admin will be created
+  + resource "yandex_resourcemanager_folder_iam_member" "storage_admin" {
+      + folder_id = "b1gjfhtn0l2tui6nt8p0"
+      + id        = (known after apply)
+      + member    = (known after apply)
+      + role      = "storage.admin"
+    }
+
+  # yandex_storage_bucket.lakehouse will be created
+  + resource "yandex_storage_bucket" "lakehouse" {
+      + access_key            = (known after apply)
+      + acl                   = (known after apply)
+      + bucket                = "future20-lakehouse-vtseplyayev"
+      + bucket_domain_name    = (known after apply)
+      + default_storage_class = (known after apply)
+      + folder_id             = "b1gjfhtn0l2tui6nt8p0"
+      + force_destroy         = false
+      + id                    = (known after apply)
+      + policy                = (known after apply)
+      + secret_key            = (sensitive value)
+      + website_domain        = (known after apply)
+      + website_endpoint      = (known after apply)
+
+      + anonymous_access_flags {
+          + config_read = false
+          + list        = false
+          + read        = false
+        }
+
+      + grant (known after apply)
+
+      + lifecycle_rule {
+          + abort_incomplete_multipart_upload_days = 7
+          + enabled                                = true
+          + id                                     = "cold-storage-transition"
+
+          + transition {
+              + days          = 30
+              + storage_class = "COLD"
+                # (1 unchanged attribute hidden)
+            }
+        }
+
+      + server_side_encryption_configuration {
+          + rule {
+              + apply_server_side_encryption_by_default {
+                  + kms_master_key_id = (known after apply)
+                  + sse_algorithm     = "aws:kms"
+                }
+            }
+        }
+
+      + versioning {
+          + enabled = true
+        }
+    }
+
+  # yandex_vpc_gateway.nat will be created
+  + resource "yandex_vpc_gateway" "nat" {
+      + created_at = (known after apply)
+      + folder_id  = "b1gjfhtn0l2tui6nt8p0"
+      + id         = (known after apply)
+      + labels     = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name       = "future20-nat-gateway"
+
+      + shared_egress_gateway {}
+    }
+
+  # yandex_vpc_network.main will be created
+  + resource "yandex_vpc_network" "main" {
+      + created_at                = (known after apply)
+      + default_security_group_id = (known after apply)
+      + description               = "Общая сеть платформы данных"
+      + folder_id                 = "b1gjfhtn0l2tui6nt8p0"
+      + id                        = (known after apply)
+      + labels                    = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name                      = "future20-network"
+      + subnet_ids                = (known after apply)
+    }
+
+  # yandex_vpc_route_table.nat will be created
+  + resource "yandex_vpc_route_table" "nat" {
+      + created_at = (known after apply)
+      + folder_id  = "b1gjfhtn0l2tui6nt8p0"
+      + id         = (known after apply)
+      + labels     = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name       = "future20-nat-route-table"
+      + network_id = (known after apply)
+
+      + static_route {
+          + destination_prefix = "0.0.0.0/0"
+          + gateway_id         = (known after apply)
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.bastion will be created
+  + resource "yandex_vpc_security_group" "bastion" {
+      + created_at  = (known after apply)
+      + description = "Единственная точка входа по SSH из доверенных сетей"
+      + folder_id   = "b1gjfhtn0l2tui6nt8p0"
+      + id          = (known after apply)
+      + labels      = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name        = "future20-sg-bastion"
+      + network_id  = (known after apply)
+      + status      = (known after apply)
+
+      + egress {
+          + description       = "Исходящий трафик без ограничений"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = -1
+          + protocol          = "ANY"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "0.0.0.0/0",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+
+      + ingress {
+          + description       = "SSH из корпоративной сети"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = 22
+          + protocol          = "TCP"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "203.0.113.0/24",
+              + "198.51.100.0/24",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.phi will be created
+  + resource "yandex_vpc_security_group" "phi" {
+      + created_at  = (known after apply)
+      + description = "Изолированный контур медицинских данных"
+      + folder_id   = "b1gjfhtn0l2tui6nt8p0"
+      + id          = (known after apply)
+      + labels      = {
+          + "contour"     = "phi"
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name        = "future20-sg-phi"
+      + network_id  = (known after apply)
+      + status      = (known after apply)
+
+      + egress {
+          + description       = "Только внутри контура: выхода в интернет нет"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = -1
+          + protocol          = "ANY"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "10.10.100.0/24",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+
+      + ingress {
+          + description       = "SSH только через бастион"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = 22
+          + protocol          = "TCP"
+          + security_group_id = (known after apply)
+          + to_port           = -1
+          + v4_cidr_blocks    = []
+          + v6_cidr_blocks    = []
+            # (1 unchanged attribute hidden)
+        }
+      + ingress {
+          + description       = "Обращения ИИ-сервисов внутри контура"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = 8443
+          + protocol          = "TCP"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "10.10.100.0/24",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.platform will be created
+  + resource "yandex_vpc_security_group" "platform" {
+      + created_at  = (known after apply)
+      + description = "Узлы платформы данных"
+      + folder_id   = "b1gjfhtn0l2tui6nt8p0"
+      + id          = (known after apply)
+      + labels      = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name        = "future20-sg-platform"
+      + network_id  = (known after apply)
+      + status      = (known after apply)
+
+      + egress {
+          + description       = "Исходящий трафик через NAT"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = -1
+          + protocol          = "ANY"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "0.0.0.0/0",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+
+      + ingress {
+          + description       = "HTTPS к порталу самообслуживания из корпоративной сети"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = 443
+          + protocol          = "TCP"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "203.0.113.0/24",
+              + "198.51.100.0/24",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+      + ingress {
+          + description       = "SSH только через бастион"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = 22
+          + protocol          = "TCP"
+          + security_group_id = (known after apply)
+          + to_port           = -1
+          + v4_cidr_blocks    = []
+          + v6_cidr_blocks    = []
+            # (1 unchanged attribute hidden)
+        }
+      + ingress {
+          + description       = "Обмен между узлами платформы внутри сети"
+          + from_port         = -1
+          + id                = (known after apply)
+          + labels            = (known after apply)
+          + port              = -1
+          + protocol          = "ANY"
+          + to_port           = -1
+          + v4_cidr_blocks    = [
+              + "10.10.1.0/24",
+              + "10.10.2.0/24",
+              + "10.10.3.0/24",
+            ]
+          + v6_cidr_blocks    = []
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_subnet.phi will be created
+  + resource "yandex_vpc_subnet" "phi" {
+      + created_at     = (known after apply)
+      + folder_id      = "b1gjfhtn0l2tui6nt8p0"
+      + id             = (known after apply)
+      + labels         = {
+          + "contour"     = "phi"
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name           = "future20-phi-ru-central1-a"
+      + network_id     = (known after apply)
+      + v4_cidr_blocks = [
+          + "10.10.100.0/24",
+        ]
+      + v6_cidr_blocks = (known after apply)
+      + zone           = "ru-central1-a"
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-a"] will be created
+  + resource "yandex_vpc_subnet" "platform" {
+      + created_at     = (known after apply)
+      + folder_id      = "b1gjfhtn0l2tui6nt8p0"
+      + id             = (known after apply)
+      + labels         = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name           = "future20-platform-ru-central1-a"
+      + network_id     = (known after apply)
+      + route_table_id = (known after apply)
+      + v4_cidr_blocks = [
+          + "10.10.1.0/24",
+        ]
+      + v6_cidr_blocks = (known after apply)
+      + zone           = "ru-central1-a"
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-b"] will be created
+  + resource "yandex_vpc_subnet" "platform" {
+      + created_at     = (known after apply)
+      + folder_id      = "b1gjfhtn0l2tui6nt8p0"
+      + id             = (known after apply)
+      + labels         = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name           = "future20-platform-ru-central1-b"
+      + network_id     = (known after apply)
+      + route_table_id = (known after apply)
+      + v4_cidr_blocks = [
+          + "10.10.2.0/24",
+        ]
+      + v6_cidr_blocks = (known after apply)
+      + zone           = "ru-central1-b"
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-d"] will be created
+  + resource "yandex_vpc_subnet" "platform" {
+      + created_at     = (known after apply)
+      + folder_id      = "b1gjfhtn0l2tui6nt8p0"
+      + id             = (known after apply)
+      + labels         = {
+          + "environment" = "dev"
+          + "managed_by"  = "terraform"
+          + "project"     = "future-2-0"
+        }
+      + name           = "future20-platform-ru-central1-d"
+      + network_id     = (known after apply)
+      + route_table_id = (known after apply)
+      + v4_cidr_blocks = [
+          + "10.10.3.0/24",
+        ]
+      + v6_cidr_blocks = (known after apply)
+      + zone           = "ru-central1-d"
+    }
+
+Plan: 24 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + bastion_public_ip       = (known after apply)
+  + bastion_ssh_command     = (known after apply)
+  + deployment_summary      = {
+      + bastion_count     = 1
+      + data_disks        = 2
+      + environment       = "dev"
+      + phi_vm_count      = 1
+      + platform_vm_count = 2
+      + subnets_total     = 4
+    }
+  + kms_key_id              = (known after apply)
+  + lakehouse_access_key    = (known after apply)
+  + lakehouse_bucket        = {
+      + bucket   = "future20-lakehouse-vtseplyayev"
+      + endpoint = "https://storage.yandexcloud.net"
+    }
+  + lakehouse_secret_key    = (sensitive value)
+  + nat_gateway_id          = (known after apply)
+  + network_id              = (known after apply)
+  + phi_node_internal_ip    = (known after apply)
+  + phi_subnet_id           = (known after apply)
+  + platform_nodes          = {
+      + kafka        = {
+          + cores       = 2
+          + internal_ip = (known after apply)
+          + memory_gb   = 4
+          + zone        = "ru-central1-b"
+        }
+      + query-engine = {
+          + cores       = 2
+          + internal_ip = (known after apply)
+          + memory_gb   = 8
+          + zone        = "ru-central1-a"
+        }
+    }
+  + platform_subnet_ids     = {
+      + ru-central1-a = (known after apply)
+      + ru-central1-b = (known after apply)
+      + ru-central1-d = (known after apply)
+    }
+  + postgres_fqdns          = []
+yandex_vpc_gateway.nat: Creating...
+yandex_vpc_network.main: Creating...
+yandex_compute_disk.platform_data["kafka"]: Creating...
+yandex_compute_disk.platform_data["query-engine"]: Creating...
+yandex_iam_service_account.storage: Creating...
+yandex_iam_service_account.platform: Creating...
+yandex_kms_symmetric_key.data: Creating...
+yandex_vpc_gateway.nat: Creation complete after 1s [id=enpkq1fcc9pei84nn11p]
+yandex_kms_symmetric_key.data: Creation complete after 2s [id=abjoo53u6cua096co7c0]
+yandex_vpc_network.main: Creation complete after 2s [id=enpq7e514cdqm60ef5eg]
+yandex_vpc_subnet.phi: Creating...
+yandex_vpc_route_table.nat: Creating...
+yandex_vpc_security_group.bastion: Creating...
+yandex_vpc_subnet.phi: Creation complete after 1s [id=e9bgu206l3tecm935r7h]
+yandex_iam_service_account.storage: Creation complete after 3s [id=ajeb5npc22ncinfhbmea]
+yandex_iam_service_account.platform: Creation complete after 3s [id=ajeb32t2bh7vmsob8ubi]
+yandex_iam_service_account_static_access_key.storage: Creating...
+yandex_resourcemanager_folder_iam_member.platform_compute: Creating...
+yandex_resourcemanager_folder_iam_member.storage_admin: Creating...
+yandex_resourcemanager_folder_iam_member.kms_encrypter: Creating...
+yandex_vpc_security_group.bastion: Creation complete after 2s [id=enpaipso2lkdci6d70hg]
+yandex_vpc_security_group.phi: Creating...
+yandex_vpc_security_group.platform: Creating...
+yandex_vpc_route_table.nat: Creation complete after 2s [id=enp4nfdmlcepnla5jpa2]
+yandex_vpc_subnet.platform["ru-central1-b"]: Creating...
+yandex_vpc_subnet.platform["ru-central1-d"]: Creating...
+yandex_iam_service_account_static_access_key.storage: Creation complete after 2s [id=aje5dohak58og8th786u]
+yandex_vpc_subnet.platform["ru-central1-a"]: Creating...
+yandex_vpc_security_group.platform: Creation complete after 1s [id=enpr8eco5rjdl2mmljbn]
+yandex_storage_bucket.lakehouse: Creating...
+yandex_vpc_subnet.platform["ru-central1-d"]: Creation complete after 1s [id=fl8de2uiahjehn2gan5v]
+yandex_vpc_subnet.platform["ru-central1-a"]: Creation complete after 1s [id=e9bg2k912tonjrejcblo]
+yandex_resourcemanager_folder_iam_member.storage_admin: Creation complete after 3s [id=b1gjfhtn0l2tui6nt8p0/storage.admin/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_vpc_subnet.platform["ru-central1-b"]: Creation complete after 2s [id=e2ln3sjfocss3nu5qe1q]
+yandex_compute_instance.bastion: Creating...
+yandex_vpc_security_group.phi: Creation complete after 4s [id=enp1pqhnnocucg67lnum]
+yandex_compute_instance.phi: Creating...
+yandex_storage_bucket.lakehouse: Creation complete after 4s [id=future20-lakehouse-vtseplyayev]
+yandex_resourcemanager_folder_iam_member.platform_compute: Creation complete after 6s [id=b1gjfhtn0l2tui6nt8p0/compute.viewer/serviceAccount:ajeb32t2bh7vmsob8ubi]
+yandex_compute_disk.platform_data["kafka"]: Still creating... [10s elapsed]
+yandex_compute_disk.platform_data["query-engine"]: Still creating... [10s elapsed]
+yandex_compute_disk.platform_data["query-engine"]: Creation complete after 10s [id=fhmj2l2sgvu816qg2hav]
+yandex_resourcemanager_folder_iam_member.kms_encrypter: Creation complete after 9s [id=b1gjfhtn0l2tui6nt8p0/kms.keys.encrypterDecrypter/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_compute_disk.platform_data["kafka"]: Creation complete after 13s [id=epdrsregeq6ca077jad3]
+yandex_compute_instance.platform["query-engine"]: Creating...
+yandex_compute_instance.platform["kafka"]: Creating...
+yandex_compute_instance.bastion: Still creating... [10s elapsed]
+yandex_compute_instance.phi: Still creating... [10s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still creating... [10s elapsed]
+yandex_compute_instance.platform["kafka"]: Still creating... [10s elapsed]
+yandex_compute_instance.bastion: Still creating... [20s elapsed]
+yandex_compute_instance.phi: Still creating... [20s elapsed]
+yandex_compute_instance.platform["kafka"]: Still creating... [20s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still creating... [20s elapsed]
+yandex_compute_instance.bastion: Still creating... [30s elapsed]
+yandex_compute_instance.phi: Still creating... [30s elapsed]
+yandex_compute_instance.platform["kafka"]: Still creating... [30s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still creating... [30s elapsed]
+yandex_compute_instance.phi: Creation complete after 38s [id=fhmqdqdegrsblplb5fn1]
+yandex_compute_instance.bastion: Still creating... [40s elapsed]
+yandex_compute_instance.bastion: Creation complete after 45s [id=fhmrsvlc547prbi7iqp3]
+yandex_compute_instance.platform["kafka"]: Still creating... [40s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still creating... [40s elapsed]
+yandex_compute_instance.platform["kafka"]: Creation complete after 43s [id=epd26jbir02i1giv8vg1]
+yandex_compute_instance.platform["query-engine"]: Creation complete after 44s [id=fhmjh08j6f92e4r9cp5m]
+
+Apply complete! Resources: 24 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bastion_public_ip = "51.250.83.118"
+bastion_ssh_command = "ssh ubuntu@51.250.83.118"
+deployment_summary = {
+  "bastion_count" = 1
+  "data_disks" = 2
+  "environment" = "dev"
+  "phi_vm_count" = 1
+  "platform_vm_count" = 2
+  "subnets_total" = 4
+}
+kms_key_id = "abjoo53u6cua096co7c0"
+lakehouse_access_key = "<redacted>"
+lakehouse_bucket = {
+  "bucket" = "future20-lakehouse-vtseplyayev"
+  "endpoint" = "https://storage.yandexcloud.net"
+}
+lakehouse_secret_key = <sensitive>
+nat_gateway_id = "enpkq1fcc9pei84nn11p"
+network_id = "enpq7e514cdqm60ef5eg"
+phi_node_internal_ip = "10.10.100.4"
+phi_subnet_id = "e9bgu206l3tecm935r7h"
+platform_nodes = {
+  "kafka" = {
+    "cores" = 2
+    "internal_ip" = "10.10.2.25"
+    "memory_gb" = 4
+    "zone" = "ru-central1-b"
+  }
+  "query-engine" = {
+    "cores" = 2
+    "internal_ip" = "10.10.1.35"
+    "memory_gb" = 8
+    "zone" = "ru-central1-a"
+  }
+}
+platform_subnet_ids = {
+  "ru-central1-a" = "e9bg2k912tonjrejcblo"
+  "ru-central1-b" = "e2ln3sjfocss3nu5qe1q"
+  "ru-central1-d" = "fl8de2uiahjehn2gan5v"
+}
+postgres_fqdns = []

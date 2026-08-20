@@ -1,0 +1,85 @@
+@startgantt roadmap
+' Роадмап трансформации технологического ландшафта «Будущее 2.0»
+' Горизонт: 16-08-2026 — 16-08-2027. Цвет задачи кодирует бизнес-цель.
+
+title Роадмап трансформации ландшафта данных «Будущее 2.0» (16-08-2026 — 16-08-2027)
+
+printscale monthly
+Project starts 2026-08-16
+
+' ===== Легенда цветов бизнес-целей =====
+' #C62828 — качество медицинских и финансовых сервисов, регуляторика (БС-4)
+' #1168BD — скорость принятия решений, отчётность и портал (БС-1)
+' #2E7D32 — независимое развитие подразделений (БС-2)
+' #6A1B9A — масштабирование на новые направления (БС-3)
+
+-- Этап 1. Фундамент и комплаенс --
+
+[Э1.1 Согласование архитектуры и границ доменов] as [E11] starts 2026-08-16 and lasts 3 weeks
+[E11] is colored in #2E7D32
+
+[Э1.2 Разделение контуров медданных и аналитики] as [E12] starts 2026-08-16 and lasts 8 weeks
+[E12] is colored in #C62828
+
+[Э1.3 Развёртывание Lakehouse: S3 и Iceberg] as [E13] starts 2026-09-01 and lasts 6 weeks
+[E13] is colored in #1168BD
+
+[Э1.4 Каталог данных и классификация PII/PHI] as [E14] starts 2026-09-07 and lasts 5 weeks
+[E14] is colored in #C62828
+
+[Э1.5 Пилот CDC на домене «Финтех»] as [E15] starts 2026-09-14 and lasts 4 weeks
+[E15] is colored in #6A1B9A
+
+[Промежуточная цель: решение согласовано, границы доменов определены] happens 2026-10-16
+
+-- Этап 2. Портал и независимость доменов --
+
+[Э2.1 Перенос логики финтеха в домен (dbt)] as [E21] starts 2026-10-19 and lasts 10 weeks
+[E21] is colored in #2E7D32
+
+[Э2.2 Событийная шина: перевод потоков с ESB] as [E22] starts 2026-10-19 and lasts 14 weeks
+[E22] is colored in #6A1B9A
+
+[Э2.3 Домен «Клиники»: обезличенные дата-продукты] as [E23] starts 2026-11-16 and lasts 8 weeks
+[E23] is colored in #C62828
+
+[Э2.4 Семантический слой и self-service BI] as [E24] starts 2026-12-14 and lasts 8 weeks
+[E24] is colored in #1168BD
+
+[Э2.5 Портал самообслуживания (MVP)] as [E25] starts 2027-01-11 and lasts 12 weeks
+[E25] is colored in #1168BD
+
+[Портал самообслуживания в промышленной эксплуатации] happens 2027-04-05
+
+-- Этап 3. Миграция легаси и качество --
+
+[Э3.1 Миграция потребителей с SQL Server 2008] as [E31] starts 2027-04-05 and lasts 14 weeks
+[E31] is colored in #C62828
+
+[Э3.2 Контракты данных и контроль качества] as [E32] starts 2027-04-05 and lasts 8 weeks
+[E32] is colored in #2E7D32
+
+[Э3.3 Домены ИИ, HR, снабжение] as [E33] starts 2027-04-19 and lasts 10 weeks
+[E33] is colored in #2E7D32
+
+[Э3.4 Отказоустойчивость и георезерв] as [E34] starts 2027-05-17 and lasts 6 weeks
+[E34] is colored in #C62828
+
+[Финальная цель: домены работают в новой архитектуре] happens 2027-08-16
+
+-- Этап 4. За горизонтом года --
+
+[Э4.1 Подключение партнёров: фарма, электроника] as [E41] starts 2027-06-14 and lasts 10 weeks
+[E41] is colored in #6A1B9A
+
+[Э4.2 Замена интерфейса на PowerBuilder] as [E42] starts 2027-07-12 and lasts 12 weeks
+[E42] is colored in #78909C
+
+' ===== Зависимости =====
+[E13] starts at [E11]'s end
+[E21] starts at [E15]'s end
+[E25] starts at [E24]'s start
+[E31] starts at [E25]'s end
+[E41] starts at [E22]'s end
+
+@endgantt

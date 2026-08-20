@@ -1,0 +1,130 @@
+{
+  "basePath": "",
+  "baseUrl": "",
+  "editUrl": "https://github.com/vtseplyayev/architecture-future_2_0/blob/tasks/Task3/radar/{release}/{id}.md",
+  "logoFile": "logo.svg",
+  "jsFile": "",
+  "toggles": {
+    "showSearch": true,
+    "showChart": true,
+    "showTagFilter": true,
+    "showQuadrantList": true,
+    "showEmptyRings": false
+  },
+  "sections": ["radar", "tags", "list"],
+  "colors": {
+    "foreground": "#fcf2e6",
+    "background": "#113521",
+    "highlight": "#d4a373",
+    "content": "#fff",
+    "text": "#575757",
+    "link": "#bc6c25",
+    "border": "rgba(255, 255, 255, 0.1)",
+    "tag": "rgba(255, 255, 255, 0.1)"
+  },
+  "quadrants": [
+    {
+      "id": "methods-and-patterns",
+      "title": "Практики и паттерны",
+      "description": "Архитектурные подходы и методы работы с данными: доменное владение, контракты, миграционные стратегии, обезличивание.",
+      "color": "#588157"
+    },
+    {
+      "id": "platforms-and-operations",
+      "title": "Платформы и эксплуатация",
+      "description": "Хранилища, шина, облачная инфраструктура и всё, на чём физически работает платформа данных.",
+      "color": "#3f633e"
+    },
+    {
+      "id": "tools",
+      "title": "Инструменты",
+      "description": "Прикладные инструменты платформы: каталог, движок запросов, трансформации, BI, качество данных, наблюдаемость.",
+      "color": "#40713f"
+    },
+    {
+      "id": "languages-and-frameworks",
+      "title": "Языки и фреймворки",
+      "description": "Языки, на которых пишутся сервисы доменов, дата-продукты и портал самообслуживания.",
+      "color": "#a3b18a"
+    }
+  ],
+  "rings": [
+    {
+      "id": "adopt",
+      "title": "Активно используем",
+      "description": "Применяем по умолчанию, решение принято и обсуждению не подлежит.",
+      "color": "#588157",
+      "radius": 0.5,
+      "strokeWidth": 5
+    },
+    {
+      "id": "trial",
+      "title": "Пробуем",
+      "description": "Элемент целевой архитектуры. Внедряем и обкатываем на пилотных доменах.",
+      "color": "#457b9d",
+      "radius": 0.69,
+      "strokeWidth": 3
+    },
+    {
+      "id": "assess",
+      "title": "Изучаем",
+      "description": "Решение не принято, есть работающая альтернатива. Оцениваем на пилоте.",
+      "color": "#bc6c25",
+      "radius": 0.85,
+      "strokeWidth": 2
+    },
+    {
+      "id": "hold",
+      "title": "Выводим из эксплуатации",
+      "description": "Новое на этом не строим. Существующее гасим по стратегии Strangler Fig.",
+      "color": "#d62828",
+      "radius": 1,
+      "strokeWidth": 0.75
+    }
+  ],
+  "flags": {
+    "new": {
+      "color": "#f1235a",
+      "title": "Новое",
+      "titleShort": "N",
+      "description": "Новое в этой версии радара"
+    },
+    "changed": {
+      "color": "#40a7d1",
+      "title": "Изменено",
+      "titleShort": "C",
+      "description": "Недавно меняло кольцо"
+    },
+    "default": {
+      "description": "Без изменений"
+    }
+  },
+  "chart": {
+    "size": 800,
+    "blipSize": 12
+  },
+  "social": [],
+  "imprint": "",
+  "labels": {
+    "title": "Технологический радар «Будущее 2.0»",
+    "imprint": "",
+    "quadrant": "Технические области",
+    "quadrantOverview": "Подробнее",
+    "zoomIn": "Приблизить",
+    "filterByTag": "Отфильтровать по тегу",
+    "footer": "Технологический радар компании «Будущее 2.0». Задание 3 проектной работы 11 спринта.",
+    "notUpdated": "Позиция не пересматривалась в последних выпусках радара.",
+    "notFound": "404 — страница не найдена",
+    "pageAbout": "Как пользоваться радаром",
+    "pageOverview": "Обзор технологий",
+    "pageSearch": "Поиск",
+    "searchPlaceholder": "Что ищете?",
+    "metaDescription": "Технологический радар компании «Будущее 2.0»"
+  },
+  "fuzzySearch": {
+    "threshold": 0.4,
+    "distance": 600,
+    "ignoreLocation": false,
+    "includeScore": true
+  }
+}

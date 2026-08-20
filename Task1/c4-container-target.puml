@@ -1,0 +1,114 @@
+@startuml c4-container-target
+' Целевая архитектура «Будущее 2.0» (горизонт — 1 год)
+' Нотация: C4 Container diagram (C4-PlantUML)
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Целевая архитектура «Будущее 2.0» (через год). Нотация: C4 Container diagram.
+
+' ===== Теги ключевых бизнес-сценариев =====
+AddRelTag("bs1", $lineColor = "#1168BD", $textColor = "#1168BD", $legendText = "БС-1. Быстрая подготовка отчётности: минуты вместо часов")
+AddRelTag("bs2", $lineColor = "#2E7D32", $textColor = "#2E7D32", $legendText = "БС-2. Независимое развитие доменов (финтех, ИИ, клиники)")
+AddRelTag("bs3", $lineColor = "#6A1B9A", $textColor = "#6A1B9A", $legendText = "БС-3. Масштабирование: подключение новых бизнес-направлений")
+AddRelTag("bs4", $lineColor = "#C62828", $textColor = "#C62828", $lineStyle = DashedLine(), $legendText = "БС-4. Регуляторика: изоляция медданных, контроль доступа")
+AddRelTag("legacy", $lineColor = "#8D6E63", $textColor = "#8D6E63", $lineStyle = DottedLine(), $legendText = "Миграция с легаси (Strangler Fig)")
+
+AddElementTag("legacy", $bgColor = "#9E9E9E", $borderColor = "#616161", $fontColor = "#FFFFFF", $legendText = "Легаси-система, выводится из эксплуатации")
+AddElementTag("phi", $bgColor = "#AD1457", $borderColor = "#880E4F", $fontColor = "#FFFFFF", $legendText = "Медданные (PHI): вне аналитического контура")
+AddElementTag("platform", $bgColor = "#1168BD", $borderColor = "#0B4884", $fontColor = "#FFFFFF", $legendText = "Точка входа пользователя в витрину данных")
+
+' ===== Пользователи =====
+Person(analyst, "Бизнес-пользователь домена", "Строит отчёты и собственные срезы в пределах своего уровня доступа")
+Person(steward, "Владелец данных домена (Data Owner / Steward)", "Публикует и версионирует дата-продукты, отвечает за качество и доступы")
+Person(clinic, "Оператор клиники", "Ведёт приёмы, медкарты и инвентаризацию")
+Person(dpo, "Офицер ИБ / комплаенс", "Контролирует доступ к ПДн, медицинской и банковской тайне")
+
+' ===================================================================
+System_Boundary(platform, "Платформа данных самообслуживания (общая, управляется платформенной командой)") {
+    Container(portal, "Портал самообслуживания", "React SPA", "Единая витрина данных: поиск дата-продуктов, конструктор отчётов, запрос доступа, просмотр SLA и качества", $tags = "platform")
+    Container(bi, "BI и семантический слой", "Superset / DataLens", "Датасеты, метрики, дашборды, ad-hoc-анализ поверх сертифицированных дата-продуктов")
+    Container(engine, "Query Engine", "Dremio / Trino", "Федеративный SQL, кэш и акселерация запросов; разделение storage и compute")
+    Container(catalog, "Каталог данных и governance", "DataHub", "Метаданные, поиск, lineage, глоссарий, владельцы, классификация PII/PHI")
+    Container(policy, "Служба доступа и политик", "IAM + OPA", "RBAC/ABAC, маскирование, row/column-level security, единая точка авторизации")
+    Container(quality, "Контроль качества данных", "Great Expectations / Soda", "Проверка контрактов дата-продуктов, SLA, алертинг")
+    Container(bus, "Событийная шина", "Apache Kafka", "Доменные события, транспорт CDC, асинхронная интеграция вместо ESB")
+    ContainerDb(lake, "Lakehouse-хранилище", "S3-совместимое объектное хранилище + Apache Iceberg", "Сотни ТБ: колоночные таблицы, партиционирование, time travel, ACID")
+    Container(nessie, "Каталог таблиц и версий", "Project Nessie", "Ветвление и версионирование данных, изолированные среды доменов")
+    Container(audit, "Наблюдаемость и аудит", "OpenTelemetry + SIEM", "Журнал доступа к данным, метрики, трассировка, доказательная база для регуляторов")
+}
+
+' ===================================================================
+System_Boundary(dom_fin, "Домен «Финтех» (банк, отдельная среда)") {
+    Container(fin_app, "Финтех-сервисы", "Golang, Java", "Счета, платежи, кредиты, финансовая история")
+    ContainerDb(fin_db, "OLTP-БД финтеха", "PostgreSQL", "Операционные данные банковских продуктов")
+    Container(fin_cdc, "CDC-коннектор", "Debezium", "Захват изменений из OLTP без нагрузки на источник")
+    Container(fin_dp, "Дата-продукты домена", "dbt + Airflow", "Бизнес-логика и витрины финтеха внутри домена, а не в общем DWH")
+}
+
+System_Boundary(dom_clinic, "Домен «Клиники» (отдельная среда)") {
+    Container(mis, "Медицинская информационная система", "Web-приложение", "Замена интерфейса на PowerBuilder: приёмы, расписание, инвентаризация")
+    ContainerDb(mis_db, "OLTP-БД клиник", "PostgreSQL", "Операционные данные клиник и инвентаризации")
+    ContainerDb(phi_store, "Защищённое хранилище медданных", "Изолированный контур", "Медкарты, истории болезней, результаты исследований. В аналитическую витрину НЕ передаются", $tags = "phi")
+    Container(clinic_dp, "Дата-продукты домена", "dbt + Airflow", "Обезличенные операционные показатели клиник: загрузка, расписание, запасы")
+}
+
+System_Boundary(dom_ai, "Домен «ИИ-сервисы» (изолированный контур)") {
+    Container(ai_svc, "ИИ-сервисы", "Python", "Диагностика и поддержка принятия врачебных решений на медданных")
+    Container(ai_dp, "Дата-продукты домена", "Python + Airflow", "Обезличенные метрики качества и утилизации моделей без клинического содержания")
+}
+
+System_Boundary(dom_hq, "Домен «Головной офис» (корпоративная отчётность)") {
+    Container(hq_dp, "Кросс-доменные дата-продукты", "dbt + Airflow", "Сводные KPI, финансовая отчётность, персонал — сборка из дата-продуктов доменов")
+}
+
+' ===================================================================
+System_Boundary(legacy, "Легаси (выводится по стратегии Strangler Fig)") {
+    Container(dwh, "DWH на MS SQL Server 2008", "SQL Server", "Источник исторических данных; бизнес-логика переносится в домены", $tags = "legacy")
+    Container(esb, "ESB", "Apache Camel", "Точечные batch-интеграции; заменяется событийной шиной", $tags = "legacy")
+    Container(pbi, "Power BI", "Power BI", "Существующие отчёты; переводятся на семантический слой", $tags = "legacy")
+}
+
+System_Ext(newbiz, "Новые бизнес-направления", "Фарма, производитель электроники: подключаются как новые домены")
+
+' ===================================================================
+' БС-1. Быстрая подготовка отчётности (минуты вместо часов)
+Rel(analyst, portal, "Ищет данные, собирает собственные отчёты", "HTTPS", $tags = "bs1")
+Rel(portal, bi, "Открывает дашборды и конструктор", "HTTPS", $tags = "bs1")
+Rel(bi, engine, "Выполняет аналитические запросы", "SQL / Arrow Flight", $tags = "bs1")
+Rel(engine, lake, "Читает Iceberg-таблицы с акселерацией", "S3 API", $tags = "bs1")
+Rel(engine, nessie, "Разрешает версии и ветки таблиц", "REST", $tags = "bs1")
+
+' БС-2. Независимое развитие доменов
+Rel(steward, portal, "Публикует дата-продукт, назначает владельцев и SLA", "HTTPS", $tags = "bs2")
+Rel(portal, catalog, "Регистрирует и ищет дата-продукты", "REST", $tags = "bs2")
+Rel(fin_dp, lake, "Публикует дата-продукты финтеха", "Iceberg", $tags = "bs2")
+Rel(clinic_dp, lake, "Публикует обезличенные показатели клиник", "Iceberg", $tags = "bs2")
+Rel(ai_dp, lake, "Публикует метрики моделей", "Iceberg", $tags = "bs2")
+Rel(hq_dp, lake, "Собирает кросс-доменные витрины", "Iceberg", $tags = "bs2")
+Rel(fin_dp, catalog, "Регистрирует схемы и lineage", "REST", $tags = "bs2")
+Rel(quality, lake, "Проверяет контракты дата-продуктов", "SQL", $tags = "bs2")
+
+' БС-3. Масштабирование на новые бизнесы
+Rel(newbiz, bus, "Подключается как новый домен: публикует события", "Kafka", $tags = "bs3")
+Rel(bus, lake, "Стримит события в Lakehouse", "Kafka Connect / Iceberg Sink", $tags = "bs3")
+Rel(fin_cdc, bus, "Передаёт изменения OLTP", "Kafka", $tags = "bs3")
+Rel(fin_db, fin_cdc, "Читает журнал транзакций", "WAL", $tags = "bs3")
+Rel(fin_app, fin_db, "Пишет операционные данные", "SQL")
+Rel(mis, mis_db, "Пишет операционные данные", "SQL")
+Rel(mis_db, bus, "Передаёт изменения через CDC", "Kafka", $tags = "bs3")
+
+' БС-4. Регуляторика и изоляция медданных
+Rel(clinic, mis, "Ведёт приёмы и медкарты", "HTTPS", $tags = "bs4")
+Rel(mis, phi_store, "Сохраняет медкарты и результаты исследований", "TLS", $tags = "bs4")
+Rel(ai_svc, phi_store, "Читает медданные только внутри защищённого контура", "TLS", $tags = "bs4")
+Rel(dpo, policy, "Задаёт политики доступа и классификацию данных", "HTTPS", $tags = "bs4")
+Rel(policy, engine, "Применяет маскирование и построчный доступ", "gRPC", $tags = "bs4")
+Rel(catalog, policy, "Передаёт классификацию PII/PHI", "REST", $tags = "bs4")
+Rel(engine, audit, "Пишет журнал доступа к данным", "OTLP", $tags = "bs4")
+
+' Легаси и миграция
+Rel(dwh, bus, "Отдаёт исторические данные через CDC на время миграции", "Kafka", $tags = "legacy")
+Rel(esb, bus, "Постепенно замещается событийной шиной", "Kafka", $tags = "legacy")
+Rel(pbi, engine, "Существующие отчёты переводятся на семантический слой", "SQL", $tags = "legacy")
+
+SHOW_LEGEND()
+@enduml

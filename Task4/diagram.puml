@@ -1,0 +1,109 @@
+@startuml deployment-automation
+' Диаграмма автоматизации развёртывания платформы данных «Будущее 2.0»
+' Показывает границу ответственности: что создаёт Terraform, а что делается вручную.
+
+title Автоматизация развёртывания: зона Terraform и ручные операции
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam ArrowFontSize 11
+skinparam componentStyle rectangle
+skinparam rectangle {
+  FontColor #263238
+  FontSize 12
+  BorderColor #90A4AE
+}
+
+' ===================================================================
+rectangle "РУЧНЫЕ ОПЕРАЦИИ (вне Terraform)" as MANUAL_ZONE #FFF3E0 {
+  rectangle "Организация и биллинг\nYandex Cloud" as M1 #back:E65100;text:FFFFFF
+  rectangle "Федерация SSO\nс корпоративным каталогом" as M2 #back:E65100;text:FFFFFF
+  rectangle "Загрузочный сервисный аккаунт\nи авторизованный ключ" as M3 #back:E65100;text:FFFFFF
+  rectangle "Бакет для remote state\n(проблема курицы и яйца)" as M4 #back:E65100;text:FFFFFF
+  rectangle "Делегирование DNS-зоны\nу регистратора" as M5 #back:E65100;text:FFFFFF
+  rectangle "Согласование с ИБ:\nмодель угроз, класс ИСПДн" as M6 #back:E65100;text:FFFFFF
+  rectangle "Установка прикладного ПО\n(конфигурационное управление)" as M7 #back:E65100;text:FFFFFF
+}
+
+' ===================================================================
+rectangle "УПРАВЛЯЕТСЯ TERRAFORM" as TF_ZONE #E8F5E9 {
+
+  rectangle "IAM и шифрование" as IAM_G #F1F8E9 {
+    rectangle "yandex_iam_service_account\nplatform, storage" as R_SA #back:2E7D32;text:FFFFFF
+    rectangle "yandex_resourcemanager_\nfolder_iam_member" as R_IAM #back:2E7D32;text:FFFFFF
+    rectangle "yandex_iam_service_account_\nstatic_access_key" as R_KEY #back:2E7D32;text:FFFFFF
+    rectangle "yandex_kms_symmetric_key\nротация 90 дней" as R_KMS #back:2E7D32;text:FFFFFF
+  }
+
+  rectangle "Сеть" as NET_G #F1F8E9 {
+    rectangle "yandex_vpc_network" as R_NET #back:2E7D32;text:FFFFFF
+    rectangle "yandex_vpc_gateway\nNAT, shared egress" as R_NAT #back:2E7D32;text:FFFFFF
+    rectangle "yandex_vpc_route_table\n0.0.0.0/0 → NAT" as R_RT #back:2E7D32;text:FFFFFF
+    rectangle "yandex_vpc_subnet (x3)\nплатформа, зоны a/b/d" as R_SUB #back:2E7D32;text:FFFFFF
+    rectangle "yandex_vpc_subnet\nконтур PHI, без маршрута" as R_SUBPHI #back:AD1457;text:FFFFFF
+    rectangle "yandex_vpc_security_group\nbastion, platform, phi" as R_SG #back:2E7D32;text:FFFFFF
+  }
+
+  rectangle "Вычисления и диски" as VM_G #F1F8E9 {
+    rectangle "yandex_compute_instance\nbastion, публичный IP" as R_BASTION #back:2E7D32;text:FFFFFF
+    rectangle "yandex_compute_instance (for_each)\nquery-engine, kafka, catalog, orchestrator" as R_VMS #back:2E7D32;text:FFFFFF
+    rectangle "yandex_compute_disk (for_each)\nвторичные диски данных" as R_DISK #back:2E7D32;text:FFFFFF
+    rectangle "yandex_compute_instance\nузел PHI, без внешнего IP" as R_VMPHI #back:AD1457;text:FFFFFF
+  }
+
+  rectangle "Хранение и метаданные" as DATA_G #F1F8E9 {
+    rectangle "yandex_storage_bucket\nLakehouse: версионирование,\nшифрование KMS, lifecycle" as R_BUCKET #back:2E7D32;text:FFFFFF
+    rectangle "yandex_mdb_postgresql_cluster\nметаданные, 2 зоны" as R_PG #back:2E7D32;text:FFFFFF
+  }
+}
+
+' ===================================================================
+' Ручные предпосылки
+M1 -[#E65100]-> M3 : создаёт
+M2 -[#E65100]-> M1 : доступ сотрудников
+M3 -[#E65100]-> R_SA : ключ для провайдера
+M4 -[#E65100]-> R_NET : backend хранит состояние
+M6 -[#E65100]-> R_SUBPHI : требования к изоляции
+
+' Зависимости внутри Terraform
+R_NET --> R_SUB
+R_NET --> R_SUBPHI
+R_NAT --> R_RT
+R_RT --> R_SUB : маршрут по умолчанию
+R_NET --> R_SG
+R_SUB --> R_BASTION
+R_SUB --> R_VMS
+R_SUBPHI --> R_VMPHI
+R_SG --> R_VMS
+R_DISK --> R_VMS : secondary_disk
+R_SA --> R_VMS : service_account_id
+R_KEY --> R_BUCKET : доступ по S3 API
+R_KMS --> R_BUCKET : шифрование по умолчанию
+R_SUB --> R_PG : хосты в подсетях
+R_IAM --> R_SA
+
+' Постобработка
+R_VMS -[#E65100]-> M7 : cloud-init только базовая настройка
+R_BASTION -[#E65100]-> M5 : A-запись на публичный IP
+
+note right of R_SUBPHI
+  Ключевое решение:
+  у подсети PHI **не задан** route_table_id.
+  Значит нет маршрута 0.0.0.0/0 и нет
+  исходящего интернета — медданные
+  не могут покинуть контур технически,
+  а не по регламенту.
+end note
+
+legend bottom
+  |= Цвет |= Значение |
+  | <back:#2E7D32>       </back> | Создаётся и управляется Terraform |
+  | <back:#AD1457>       </back> | Изолированный контур медданных (тоже Terraform) |
+  | <back:#E65100>       </back> | Выполняется вручную вне Terraform |
+  ---
+  Под управлением Terraform: 1 сеть, 4 подсети, NAT-шлюз, таблица маршрутизации,
+  3 группы безопасности, 6 виртуальных машин, 3 диска данных, бакет,
+  кластер PostgreSQL, 2 сервисных аккаунта, ключ KMS.
+endlegend
+
+@enduml

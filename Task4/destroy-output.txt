@@ -1,0 +1,1112 @@
+data.yandex_compute_image.ubuntu: Reading...
+yandex_iam_service_account.platform: Refreshing state... [id=ajeb32t2bh7vmsob8ubi]
+yandex_vpc_gateway.nat: Refreshing state... [id=enpkq1fcc9pei84nn11p]
+yandex_kms_symmetric_key.data: Refreshing state... [id=abjoo53u6cua096co7c0]
+yandex_compute_disk.platform_data["kafka"]: Refreshing state... [id=epdrsregeq6ca077jad3]
+yandex_vpc_network.main: Refreshing state... [id=enpq7e514cdqm60ef5eg]
+yandex_iam_service_account.storage: Refreshing state... [id=ajeb5npc22ncinfhbmea]
+yandex_compute_disk.platform_data["query-engine"]: Refreshing state... [id=fhmj2l2sgvu816qg2hav]
+data.yandex_compute_image.ubuntu: Read complete after 1s [id=fd8548a3jsnsqvdksljd]
+yandex_vpc_subnet.phi: Refreshing state... [id=e9bgu206l3tecm935r7h]
+yandex_vpc_route_table.nat: Refreshing state... [id=enp4nfdmlcepnla5jpa2]
+yandex_vpc_security_group.bastion: Refreshing state... [id=enpaipso2lkdci6d70hg]
+yandex_vpc_subnet.platform["ru-central1-d"]: Refreshing state... [id=fl8de2uiahjehn2gan5v]
+yandex_vpc_subnet.platform["ru-central1-a"]: Refreshing state... [id=e9bg2k912tonjrejcblo]
+yandex_vpc_subnet.platform["ru-central1-b"]: Refreshing state... [id=e2ln3sjfocss3nu5qe1q]
+yandex_vpc_security_group.phi: Refreshing state... [id=enp1pqhnnocucg67lnum]
+yandex_vpc_security_group.platform: Refreshing state... [id=enpr8eco5rjdl2mmljbn]
+yandex_compute_instance.bastion: Refreshing state... [id=fhmrsvlc547prbi7iqp3]
+yandex_compute_instance.phi: Refreshing state... [id=fhmqdqdegrsblplb5fn1]
+yandex_resourcemanager_folder_iam_member.kms_encrypter: Refreshing state... [id=b1gjfhtn0l2tui6nt8p0/kms.keys.encrypterDecrypter/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_resourcemanager_folder_iam_member.storage_admin: Refreshing state... [id=b1gjfhtn0l2tui6nt8p0/storage.admin/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_iam_service_account_static_access_key.storage: Refreshing state... [id=aje5dohak58og8th786u]
+yandex_resourcemanager_folder_iam_member.platform_compute: Refreshing state... [id=b1gjfhtn0l2tui6nt8p0/compute.viewer/serviceAccount:ajeb32t2bh7vmsob8ubi]
+yandex_compute_instance.platform["kafka"]: Refreshing state... [id=epd26jbir02i1giv8vg1]
+yandex_compute_instance.platform["query-engine"]: Refreshing state... [id=fhmjh08j6f92e4r9cp5m]
+yandex_storage_bucket.lakehouse: Refreshing state... [id=future20-lakehouse-vtseplyayev]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # yandex_compute_disk.platform_data["kafka"] will be destroyed
+  - resource "yandex_compute_disk" "platform_data" {
+      - block_size  = 4096 -> null
+      - created_at  = "2026-08-16T20:03:17Z" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "epdrsregeq6ca077jad3" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+          - "role"        = "kafka"
+        } -> null
+      - name        = "future20-kafka-data" -> null
+      - product_ids = [] -> null
+      - size        = 20 -> null
+      - status      = "ready" -> null
+      - type        = "network-hdd" -> null
+      - zone        = "ru-central1-b" -> null
+        # (3 unchanged attributes hidden)
+
+      - disk_placement_policy {
+            # (1 unchanged attribute hidden)
+        }
+
+      - hardware_generation {
+          - legacy_features {
+              - pci_topology = "PCI_TOPOLOGY_V2" -> null
+            }
+        }
+    }
+
+  # yandex_compute_disk.platform_data["query-engine"] will be destroyed
+  - resource "yandex_compute_disk" "platform_data" {
+      - block_size  = 4096 -> null
+      - created_at  = "2026-08-16T20:03:17Z" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "fhmj2l2sgvu816qg2hav" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+          - "role"        = "query-engine"
+        } -> null
+      - name        = "future20-query-engine-data" -> null
+      - product_ids = [] -> null
+      - size        = 20 -> null
+      - status      = "ready" -> null
+      - type        = "network-hdd" -> null
+      - zone        = "ru-central1-a" -> null
+        # (3 unchanged attributes hidden)
+
+      - disk_placement_policy {
+            # (1 unchanged attribute hidden)
+        }
+
+      - hardware_generation {
+          - legacy_features {
+              - pci_topology = "PCI_TOPOLOGY_V2" -> null
+            }
+        }
+    }
+
+  # yandex_compute_instance.bastion will be destroyed
+  - resource "yandex_compute_instance" "bastion" {
+      - created_at                = "2026-08-16T20:03:23Z" -> null
+      - folder_id                 = "b1gjfhtn0l2tui6nt8p0" -> null
+      - fqdn                      = "bastion.ru-central1.internal" -> null
+      - hardware_generation       = [
+          - {
+              - generation2_features = []
+              - legacy_features      = [
+                  - {
+                      - pci_topology = "PCI_TOPOLOGY_V2"
+                    },
+                ]
+            },
+        ] -> null
+      - hostname                  = "bastion" -> null
+      - id                        = "fhmrsvlc547prbi7iqp3" -> null
+      - labels                    = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - metadata                  = {
+          - "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          - "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        } -> null
+      - name                      = "future20-bastion" -> null
+      - network_acceleration_type = "standard" -> null
+      - platform_id               = "standard-v3" -> null
+      - status                    = "running" -> null
+      - zone                      = "ru-central1-a" -> null
+        # (5 unchanged attributes hidden)
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "fhmaki12ofasano4fhpc" -> null
+          - disk_id     = "fhmaki12ofasano4fhpc" -> null
+          - mode        = "READ_WRITE" -> null
+
+          - initialize_params {
+              - block_size  = 4096 -> null
+              - image_id    = "fd8548a3jsnsqvdksljd" -> null
+                name        = null
+              - size        = 20 -> null
+              - type        = "network-hdd" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      - metadata_options {
+          - aws_v1_http_endpoint = 1 -> null
+          - aws_v1_http_token    = 2 -> null
+          - aws_v2_http_endpoint = 1 -> null
+          - aws_v2_http_token    = 1 -> null
+          - gce_http_endpoint    = 1 -> null
+          - gce_http_token       = 1 -> null
+        }
+
+      - network_interface {
+          - index              = 0 -> null
+          - ip_address         = "10.10.1.5" -> null
+          - ipv4               = true -> null
+          - ipv6               = false -> null
+          - mac_address        = "d0:0d:1b:e7:ea:c2" -> null
+          - nat                = true -> null
+          - nat_ip_address     = "51.250.83.118" -> null
+          - nat_ip_version     = "IPV4" -> null
+          - security_group_ids = [
+              - "enpaipso2lkdci6d70hg",
+            ] -> null
+          - subnet_id          = "e9bg2k912tonjrejcblo" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - placement_policy {
+          - host_affinity_rules       = [] -> null
+          - placement_group_partition = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - resources {
+          - core_fraction = 20 -> null
+          - cores         = 2 -> null
+          - gpus          = 0 -> null
+          - memory        = 2 -> null
+        }
+
+      - scheduling_policy {
+          - preemptible = true -> null
+        }
+    }
+
+  # yandex_compute_instance.phi will be destroyed
+  - resource "yandex_compute_instance" "phi" {
+      - created_at                = "2026-08-16T20:03:25Z" -> null
+      - folder_id                 = "b1gjfhtn0l2tui6nt8p0" -> null
+      - fqdn                      = "phi-node.ru-central1.internal" -> null
+      - hardware_generation       = [
+          - {
+              - generation2_features = []
+              - legacy_features      = [
+                  - {
+                      - pci_topology = "PCI_TOPOLOGY_V2"
+                    },
+                ]
+            },
+        ] -> null
+      - hostname                  = "phi-node" -> null
+      - id                        = "fhmqdqdegrsblplb5fn1" -> null
+      - labels                    = {
+          - "contour"     = "phi"
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+          - "role"        = "phi-node"
+        } -> null
+      - metadata                  = {
+          - "ssh-keys" = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+        } -> null
+      - name                      = "future20-phi-node" -> null
+      - network_acceleration_type = "standard" -> null
+      - platform_id               = "standard-v3" -> null
+      - status                    = "running" -> null
+      - zone                      = "ru-central1-a" -> null
+        # (5 unchanged attributes hidden)
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "fhm9e7gaa3n401735goa" -> null
+          - disk_id     = "fhm9e7gaa3n401735goa" -> null
+          - mode        = "READ_WRITE" -> null
+
+          - initialize_params {
+              - block_size  = 4096 -> null
+              - image_id    = "fd8548a3jsnsqvdksljd" -> null
+                name        = null
+              - size        = 30 -> null
+              - type        = "network-ssd" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      - metadata_options {
+          - aws_v1_http_endpoint = 1 -> null
+          - aws_v1_http_token    = 2 -> null
+          - aws_v2_http_endpoint = 1 -> null
+          - aws_v2_http_token    = 1 -> null
+          - gce_http_endpoint    = 1 -> null
+          - gce_http_token       = 1 -> null
+        }
+
+      - network_interface {
+          - index              = 0 -> null
+          - ip_address         = "10.10.100.4" -> null
+          - ipv4               = true -> null
+          - ipv6               = false -> null
+          - mac_address        = "d0:0d:1a:6e:9a:e8" -> null
+          - nat                = false -> null
+          - security_group_ids = [
+              - "enp1pqhnnocucg67lnum",
+            ] -> null
+          - subnet_id          = "e9bgu206l3tecm935r7h" -> null
+            # (3 unchanged attributes hidden)
+        }
+
+      - placement_policy {
+          - host_affinity_rules       = [] -> null
+          - placement_group_partition = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - resources {
+          - core_fraction = 20 -> null
+          - cores         = 2 -> null
+          - gpus          = 0 -> null
+          - memory        = 4 -> null
+        }
+
+      - scheduling_policy {
+          - preemptible = false -> null
+        }
+    }
+
+  # yandex_compute_instance.platform["kafka"] will be destroyed
+  - resource "yandex_compute_instance" "platform" {
+      - created_at                = "2026-08-16T20:03:30Z" -> null
+      - folder_id                 = "b1gjfhtn0l2tui6nt8p0" -> null
+      - fqdn                      = "kafka.ru-central1.internal" -> null
+      - hardware_generation       = [
+          - {
+              - generation2_features = []
+              - legacy_features      = [
+                  - {
+                      - pci_topology = "PCI_TOPOLOGY_V2"
+                    },
+                ]
+            },
+        ] -> null
+      - hostname                  = "kafka" -> null
+      - id                        = "epd26jbir02i1giv8vg1" -> null
+      - labels                    = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+          - "role"        = "kafka"
+        } -> null
+      - metadata                  = {
+          - "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          - "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        } -> null
+      - name                      = "future20-kafka" -> null
+      - network_acceleration_type = "standard" -> null
+      - platform_id               = "standard-v3" -> null
+      - service_account_id        = "ajeb32t2bh7vmsob8ubi" -> null
+      - status                    = "running" -> null
+      - zone                      = "ru-central1-b" -> null
+        # (4 unchanged attributes hidden)
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "epdofkuc8lkjsjk5s9th" -> null
+          - disk_id     = "epdofkuc8lkjsjk5s9th" -> null
+          - mode        = "READ_WRITE" -> null
+
+          - initialize_params {
+              - block_size  = 4096 -> null
+              - image_id    = "fd8548a3jsnsqvdksljd" -> null
+                name        = null
+              - size        = 30 -> null
+              - type        = "network-ssd" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      - metadata_options {
+          - aws_v1_http_endpoint = 1 -> null
+          - aws_v1_http_token    = 2 -> null
+          - aws_v2_http_endpoint = 1 -> null
+          - aws_v2_http_token    = 1 -> null
+          - gce_http_endpoint    = 1 -> null
+          - gce_http_token       = 1 -> null
+        }
+
+      - network_interface {
+          - index              = 0 -> null
+          - ip_address         = "10.10.2.25" -> null
+          - ipv4               = true -> null
+          - ipv6               = false -> null
+          - mac_address        = "d0:0d:23:4d:72:d8" -> null
+          - nat                = false -> null
+          - security_group_ids = [
+              - "enpr8eco5rjdl2mmljbn",
+            ] -> null
+          - subnet_id          = "e2ln3sjfocss3nu5qe1q" -> null
+            # (3 unchanged attributes hidden)
+        }
+
+      - placement_policy {
+          - host_affinity_rules       = [] -> null
+          - placement_group_partition = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - resources {
+          - core_fraction = 20 -> null
+          - cores         = 2 -> null
+          - gpus          = 0 -> null
+          - memory        = 4 -> null
+        }
+
+      - scheduling_policy {
+          - preemptible = false -> null
+        }
+
+      - secondary_disk {
+          - auto_delete = false -> null
+          - device_name = "data" -> null
+          - disk_id     = "epdrsregeq6ca077jad3" -> null
+          - mode        = "READ_WRITE" -> null
+        }
+    }
+
+  # yandex_compute_instance.platform["query-engine"] will be destroyed
+  - resource "yandex_compute_instance" "platform" {
+      - created_at                = "2026-08-16T20:03:30Z" -> null
+      - folder_id                 = "b1gjfhtn0l2tui6nt8p0" -> null
+      - fqdn                      = "query-engine.ru-central1.internal" -> null
+      - hardware_generation       = [
+          - {
+              - generation2_features = []
+              - legacy_features      = [
+                  - {
+                      - pci_topology = "PCI_TOPOLOGY_V2"
+                    },
+                ]
+            },
+        ] -> null
+      - hostname                  = "query-engine" -> null
+      - id                        = "fhmjh08j6f92e4r9cp5m" -> null
+      - labels                    = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+          - "role"        = "query-engine"
+        } -> null
+      - metadata                  = {
+          - "ssh-keys"  = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5YE+d3jI9NtZqPmNr/TdmWCVKnhGnQLH98EKLo5Cyz future20"
+          - "user-data" = <<-EOT
+                #cloud-config
+                # Минимальная первичная настройка узлов.
+                # Прикладное ПО ставится отдельным слоем конфигурационного управления,
+                # Terraform отвечает только за инфраструктуру.
+                
+                package_update: true
+                package_upgrade: false
+                
+                packages:
+                  - chrony
+                  - curl
+                  - jq
+                
+                write_files:
+                  - path: /etc/sysctl.d/99-platform.conf
+                    content: |
+                      # Узлы платформы данных держат много открытых соединений
+                      net.core.somaxconn = 4096
+                      vm.max_map_count = 262144
+                    permissions: "0644"
+                
+                runcmd:
+                  - [systemctl, enable, --now, chrony]
+                  - [sysctl, --system]
+            EOT
+        } -> null
+      - name                      = "future20-query-engine" -> null
+      - network_acceleration_type = "standard" -> null
+      - platform_id               = "standard-v3" -> null
+      - service_account_id        = "ajeb32t2bh7vmsob8ubi" -> null
+      - status                    = "running" -> null
+      - zone                      = "ru-central1-a" -> null
+        # (4 unchanged attributes hidden)
+
+      - boot_disk {
+          - auto_delete = true -> null
+          - device_name = "fhmnal1lg6hqnv02qav8" -> null
+          - disk_id     = "fhmnal1lg6hqnv02qav8" -> null
+          - mode        = "READ_WRITE" -> null
+
+          - initialize_params {
+              - block_size  = 4096 -> null
+              - image_id    = "fd8548a3jsnsqvdksljd" -> null
+                name        = null
+              - size        = 30 -> null
+              - type        = "network-ssd" -> null
+                # (3 unchanged attributes hidden)
+            }
+        }
+
+      - metadata_options {
+          - aws_v1_http_endpoint = 1 -> null
+          - aws_v1_http_token    = 2 -> null
+          - aws_v2_http_endpoint = 1 -> null
+          - aws_v2_http_token    = 1 -> null
+          - gce_http_endpoint    = 1 -> null
+          - gce_http_token       = 1 -> null
+        }
+
+      - network_interface {
+          - index              = 0 -> null
+          - ip_address         = "10.10.1.35" -> null
+          - ipv4               = true -> null
+          - ipv6               = false -> null
+          - mac_address        = "d0:0d:13:88:11:33" -> null
+          - nat                = false -> null
+          - security_group_ids = [
+              - "enpr8eco5rjdl2mmljbn",
+            ] -> null
+          - subnet_id          = "e9bg2k912tonjrejcblo" -> null
+            # (3 unchanged attributes hidden)
+        }
+
+      - placement_policy {
+          - host_affinity_rules       = [] -> null
+          - placement_group_partition = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - resources {
+          - core_fraction = 20 -> null
+          - cores         = 2 -> null
+          - gpus          = 0 -> null
+          - memory        = 8 -> null
+        }
+
+      - scheduling_policy {
+          - preemptible = false -> null
+        }
+
+      - secondary_disk {
+          - auto_delete = false -> null
+          - device_name = "data" -> null
+          - disk_id     = "fhmj2l2sgvu816qg2hav" -> null
+          - mode        = "READ_WRITE" -> null
+        }
+    }
+
+  # yandex_iam_service_account.platform will be destroyed
+  - resource "yandex_iam_service_account" "platform" {
+      - created_at         = "2026-08-16T20:03:18Z" -> null
+      - description        = "Сервисный аккаунт узлов платформы данных" -> null
+      - expires_at         = "1970-01-01T00:00:00Z" -> null
+      - folder_id          = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id                 = "ajeb32t2bh7vmsob8ubi" -> null
+      - name               = "future20-platform-sa" -> null
+      - service_account_id = "ajeb32t2bh7vmsob8ubi" -> null
+      - status             = "ACTIVE" -> null
+    }
+
+  # yandex_iam_service_account.storage will be destroyed
+  - resource "yandex_iam_service_account" "storage" {
+      - created_at         = "2026-08-16T20:03:18Z" -> null
+      - description        = "Сервисный аккаунт для доступа к бакету Lakehouse" -> null
+      - expires_at         = "1970-01-01T00:00:00Z" -> null
+      - folder_id          = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id                 = "ajeb5npc22ncinfhbmea" -> null
+      - name               = "future20-storage-sa" -> null
+      - service_account_id = "ajeb5npc22ncinfhbmea" -> null
+      - status             = "ACTIVE" -> null
+    }
+
+  # yandex_iam_service_account_static_access_key.storage will be destroyed
+  - resource "yandex_iam_service_account_static_access_key" "storage" {
+      - access_key         = "<redacted>" -> null
+      - created_at         = "2026-08-16T20:03:19Z" -> null
+      - description        = "Ключ S3 API для доступа к бакету Lakehouse" -> null
+      - id                 = "aje5dohak58og8th786u" -> null
+      - secret_key         = (sensitive value) -> null
+      - service_account_id = "ajeb5npc22ncinfhbmea" -> null
+    }
+
+  # yandex_kms_symmetric_key.data will be destroyed
+  - resource "yandex_kms_symmetric_key" "data" {
+      - created_at          = "2026-08-16T20:03:17Z" -> null
+      - default_algorithm   = "AES_256" -> null
+      - deletion_protection = false -> null
+      - description         = "Шифрование бакета Lakehouse и дисков контура медданных" -> null
+      - folder_id           = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id                  = "abjoo53u6cua096co7c0" -> null
+      - labels              = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name                = "future20-data-key" -> null
+      - rotated_at          = "1970-01-01T00:00:00Z" -> null
+      - rotation_period     = "2160h" -> null
+      - status              = "ACTIVE" -> null
+      - symmetric_key_id    = "abjoo53u6cua096co7c0" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.kms_encrypter will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "kms_encrypter" {
+      - folder_id = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id        = "b1gjfhtn0l2tui6nt8p0/kms.keys.encrypterDecrypter/serviceAccount:ajeb5npc22ncinfhbmea" -> null
+      - member    = "serviceAccount:ajeb5npc22ncinfhbmea" -> null
+      - role      = "kms.keys.encrypterDecrypter" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.platform_compute will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "platform_compute" {
+      - folder_id = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id        = "b1gjfhtn0l2tui6nt8p0/compute.viewer/serviceAccount:ajeb32t2bh7vmsob8ubi" -> null
+      - member    = "serviceAccount:ajeb32t2bh7vmsob8ubi" -> null
+      - role      = "compute.viewer" -> null
+    }
+
+  # yandex_resourcemanager_folder_iam_member.storage_admin will be destroyed
+  - resource "yandex_resourcemanager_folder_iam_member" "storage_admin" {
+      - folder_id = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id        = "b1gjfhtn0l2tui6nt8p0/storage.admin/serviceAccount:ajeb5npc22ncinfhbmea" -> null
+      - member    = "serviceAccount:ajeb5npc22ncinfhbmea" -> null
+      - role      = "storage.admin" -> null
+    }
+
+  # yandex_storage_bucket.lakehouse will be destroyed
+  - resource "yandex_storage_bucket" "lakehouse" {
+      - access_key              = "<redacted>" -> null
+      - bucket                  = "future20-lakehouse-vtseplyayev" -> null
+      - bucket_domain_name      = "future20-lakehouse-vtseplyayev.storage.yandexcloud.net" -> null
+      - default_storage_class   = "STANDARD" -> null
+      - disabled_statickey_auth = false -> null
+      - folder_id               = "b1gjfhtn0l2tui6nt8p0" -> null
+      - force_destroy           = false -> null
+      - id                      = "future20-lakehouse-vtseplyayev" -> null
+      - max_size                = 0 -> null
+      - secret_key              = (sensitive value) -> null
+      - tags                    = {} -> null
+        # (1 unchanged attribute hidden)
+
+      - anonymous_access_flags {
+          - config_read = false -> null
+          - list        = false -> null
+          - read        = false -> null
+        }
+
+      - lifecycle_rule {
+          - abort_incomplete_multipart_upload_days = 7 -> null
+          - enabled                                = true -> null
+          - id                                     = "cold-storage-transition" -> null
+            # (1 unchanged attribute hidden)
+
+          - transition {
+              - days          = 30 -> null
+              - storage_class = "COLD" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - apply_server_side_encryption_by_default {
+                  - kms_master_key_id = "abjoo53u6cua096co7c0" -> null
+                  - sse_algorithm     = "aws:kms" -> null
+                }
+            }
+        }
+
+      - versioning {
+          - enabled = true -> null
+        }
+    }
+
+  # yandex_vpc_gateway.nat will be destroyed
+  - resource "yandex_vpc_gateway" "nat" {
+      - created_at  = "2026-08-16T20:03:17Z" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "enpkq1fcc9pei84nn11p" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name        = "future20-nat-gateway" -> null
+        # (1 unchanged attribute hidden)
+
+      - shared_egress_gateway {}
+    }
+
+  # yandex_vpc_network.main will be destroyed
+  - resource "yandex_vpc_network" "main" {
+      - created_at                = "2026-08-16T20:03:17Z" -> null
+      - default_security_group_id = "enputvo28b6fnustcd1o" -> null
+      - description               = "Общая сеть платформы данных" -> null
+      - folder_id                 = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id                        = "enpq7e514cdqm60ef5eg" -> null
+      - labels                    = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name                      = "future20-network" -> null
+      - subnet_ids                = [
+          - "e2ln3sjfocss3nu5qe1q",
+          - "e9bg2k912tonjrejcblo",
+          - "e9bgu206l3tecm935r7h",
+          - "fl8de2uiahjehn2gan5v",
+        ] -> null
+    }
+
+  # yandex_vpc_route_table.nat will be destroyed
+  - resource "yandex_vpc_route_table" "nat" {
+      - created_at  = "2026-08-16T20:03:19Z" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "enp4nfdmlcepnla5jpa2" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name        = "future20-nat-route-table" -> null
+      - network_id  = "enpq7e514cdqm60ef5eg" -> null
+        # (1 unchanged attribute hidden)
+
+      - static_route {
+          - destination_prefix = "0.0.0.0/0" -> null
+          - gateway_id         = "enpkq1fcc9pei84nn11p" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.bastion will be destroyed
+  - resource "yandex_vpc_security_group" "bastion" {
+      - created_at  = "2026-08-16T20:03:20Z" -> null
+      - description = "Единственная точка входа по SSH из доверенных сетей" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "enpaipso2lkdci6d70hg" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name        = "future20-sg-bastion" -> null
+      - network_id  = "enpq7e514cdqm60ef5eg" -> null
+      - status      = "ACTIVE" -> null
+
+      - egress {
+          - description       = "Исходящий трафик без ограничений" -> null
+          - from_port         = -1 -> null
+          - id                = "enp0at0m1kkmf8q388hs" -> null
+          - labels            = {} -> null
+          - port              = -1 -> null
+          - protocol          = "ANY" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "0.0.0.0/0",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - ingress {
+          - description       = "SSH из корпоративной сети" -> null
+          - from_port         = -1 -> null
+          - id                = "enpp6uc7kb5t5gumov1o" -> null
+          - labels            = {} -> null
+          - port              = 22 -> null
+          - protocol          = "TCP" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "203.0.113.0/24",
+              - "198.51.100.0/24",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.phi will be destroyed
+  - resource "yandex_vpc_security_group" "phi" {
+      - created_at  = "2026-08-16T20:03:24Z" -> null
+      - description = "Изолированный контур медицинских данных" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "enp1pqhnnocucg67lnum" -> null
+      - labels      = {
+          - "contour"     = "phi"
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name        = "future20-sg-phi" -> null
+      - network_id  = "enpq7e514cdqm60ef5eg" -> null
+      - status      = "ACTIVE" -> null
+
+      - egress {
+          - description       = "Только внутри контура: выхода в интернет нет" -> null
+          - from_port         = -1 -> null
+          - id                = "enpc5m4qf99vt94e2nsi" -> null
+          - labels            = {} -> null
+          - port              = -1 -> null
+          - protocol          = "ANY" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "10.10.100.0/24",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - ingress {
+          - description       = "SSH только через бастион" -> null
+          - from_port         = -1 -> null
+          - id                = "enpgsqgu1ba2lbnv188h" -> null
+          - labels            = {} -> null
+          - port              = 22 -> null
+          - protocol          = "TCP" -> null
+          - security_group_id = "enpaipso2lkdci6d70hg" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (1 unchanged attribute hidden)
+        }
+      - ingress {
+          - description       = "Обращения ИИ-сервисов внутри контура" -> null
+          - from_port         = -1 -> null
+          - id                = "enpvhtahms64j8vq526t" -> null
+          - labels            = {} -> null
+          - port              = 8443 -> null
+          - protocol          = "TCP" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "10.10.100.0/24",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_security_group.platform will be destroyed
+  - resource "yandex_vpc_security_group" "platform" {
+      - created_at  = "2026-08-16T20:03:21Z" -> null
+      - description = "Узлы платформы данных" -> null
+      - folder_id   = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id          = "enpr8eco5rjdl2mmljbn" -> null
+      - labels      = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name        = "future20-sg-platform" -> null
+      - network_id  = "enpq7e514cdqm60ef5eg" -> null
+      - status      = "ACTIVE" -> null
+
+      - egress {
+          - description       = "Исходящий трафик через NAT" -> null
+          - from_port         = -1 -> null
+          - id                = "enpi98c4upqk81gugtdb" -> null
+          - labels            = {} -> null
+          - port              = -1 -> null
+          - protocol          = "ANY" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "0.0.0.0/0",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - ingress {
+          - description       = "HTTPS к порталу самообслуживания из корпоративной сети" -> null
+          - from_port         = -1 -> null
+          - id                = "enp3m7bsgabaj7bqu66u" -> null
+          - labels            = {} -> null
+          - port              = 443 -> null
+          - protocol          = "TCP" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "203.0.113.0/24",
+              - "198.51.100.0/24",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+      - ingress {
+          - description       = "SSH только через бастион" -> null
+          - from_port         = -1 -> null
+          - id                = "enpidpc89imgl6k4563l" -> null
+          - labels            = {} -> null
+          - port              = 22 -> null
+          - protocol          = "TCP" -> null
+          - security_group_id = "enpaipso2lkdci6d70hg" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (1 unchanged attribute hidden)
+        }
+      - ingress {
+          - description       = "Обмен между узлами платформы внутри сети" -> null
+          - from_port         = -1 -> null
+          - id                = "enpbatkumf12v4vbtrjj" -> null
+          - labels            = {} -> null
+          - port              = -1 -> null
+          - protocol          = "ANY" -> null
+          - to_port           = -1 -> null
+          - v4_cidr_blocks    = [
+              - "10.10.1.0/24",
+              - "10.10.2.0/24",
+              - "10.10.3.0/24",
+            ] -> null
+          - v6_cidr_blocks    = [] -> null
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # yandex_vpc_subnet.phi will be destroyed
+  - resource "yandex_vpc_subnet" "phi" {
+      - created_at     = "2026-08-16T20:03:19Z" -> null
+      - folder_id      = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id             = "e9bgu206l3tecm935r7h" -> null
+      - labels         = {
+          - "contour"     = "phi"
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name           = "future20-phi-ru-central1-a" -> null
+      - network_id     = "enpq7e514cdqm60ef5eg" -> null
+      - v4_cidr_blocks = [
+          - "10.10.100.0/24",
+        ] -> null
+      - v6_cidr_blocks = [] -> null
+      - zone           = "ru-central1-a" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-a"] will be destroyed
+  - resource "yandex_vpc_subnet" "platform" {
+      - created_at     = "2026-08-16T20:03:22Z" -> null
+      - folder_id      = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id             = "e9bg2k912tonjrejcblo" -> null
+      - labels         = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name           = "future20-platform-ru-central1-a" -> null
+      - network_id     = "enpq7e514cdqm60ef5eg" -> null
+      - route_table_id = "enp4nfdmlcepnla5jpa2" -> null
+      - v4_cidr_blocks = [
+          - "10.10.1.0/24",
+        ] -> null
+      - v6_cidr_blocks = [] -> null
+      - zone           = "ru-central1-a" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-b"] will be destroyed
+  - resource "yandex_vpc_subnet" "platform" {
+      - created_at     = "2026-08-16T20:03:22Z" -> null
+      - folder_id      = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id             = "e2ln3sjfocss3nu5qe1q" -> null
+      - labels         = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name           = "future20-platform-ru-central1-b" -> null
+      - network_id     = "enpq7e514cdqm60ef5eg" -> null
+      - route_table_id = "enp4nfdmlcepnla5jpa2" -> null
+      - v4_cidr_blocks = [
+          - "10.10.2.0/24",
+        ] -> null
+      - v6_cidr_blocks = [] -> null
+      - zone           = "ru-central1-b" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # yandex_vpc_subnet.platform["ru-central1-d"] will be destroyed
+  - resource "yandex_vpc_subnet" "platform" {
+      - created_at     = "2026-08-16T20:03:21Z" -> null
+      - folder_id      = "b1gjfhtn0l2tui6nt8p0" -> null
+      - id             = "fl8de2uiahjehn2gan5v" -> null
+      - labels         = {
+          - "environment" = "dev"
+          - "managed_by"  = "terraform"
+          - "project"     = "future-2-0"
+        } -> null
+      - name           = "future20-platform-ru-central1-d" -> null
+      - network_id     = "enpq7e514cdqm60ef5eg" -> null
+      - route_table_id = "enp4nfdmlcepnla5jpa2" -> null
+      - v4_cidr_blocks = [
+          - "10.10.3.0/24",
+        ] -> null
+      - v6_cidr_blocks = [] -> null
+      - zone           = "ru-central1-d" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 0 to change, 24 to destroy.
+
+Changes to Outputs:
+  - bastion_public_ip    = "51.250.83.118" -> null
+  - bastion_ssh_command  = "ssh ubuntu@51.250.83.118" -> null
+  - deployment_summary   = {
+      - bastion_count     = 1
+      - data_disks        = 2
+      - environment       = "dev"
+      - phi_vm_count      = 1
+      - platform_vm_count = 2
+      - subnets_total     = 4
+    } -> null
+  - kms_key_id           = "abjoo53u6cua096co7c0" -> null
+  - lakehouse_access_key = "<redacted>" -> null
+  - lakehouse_bucket     = {
+      - bucket   = "future20-lakehouse-vtseplyayev"
+      - endpoint = "https://storage.yandexcloud.net"
+    } -> null
+  - lakehouse_secret_key = (sensitive value) -> null
+  - nat_gateway_id       = "enpkq1fcc9pei84nn11p" -> null
+  - network_id           = "enpq7e514cdqm60ef5eg" -> null
+  - phi_node_internal_ip = "10.10.100.4" -> null
+  - phi_subnet_id        = "e9bgu206l3tecm935r7h" -> null
+  - platform_nodes       = {
+      - kafka        = {
+          - cores       = 2
+          - internal_ip = "10.10.2.25"
+          - memory_gb   = 4
+          - zone        = "ru-central1-b"
+        }
+      - query-engine = {
+          - cores       = 2
+          - internal_ip = "10.10.1.35"
+          - memory_gb   = 8
+          - zone        = "ru-central1-a"
+        }
+    } -> null
+  - platform_subnet_ids  = {
+      - ru-central1-a = "e9bg2k912tonjrejcblo"
+      - ru-central1-b = "e2ln3sjfocss3nu5qe1q"
+      - ru-central1-d = "fl8de2uiahjehn2gan5v"
+    } -> null
+  - postgres_fqdns       = [] -> null
+yandex_resourcemanager_folder_iam_member.platform_compute: Destroying... [id=b1gjfhtn0l2tui6nt8p0/compute.viewer/serviceAccount:ajeb32t2bh7vmsob8ubi]
+yandex_resourcemanager_folder_iam_member.storage_admin: Destroying... [id=b1gjfhtn0l2tui6nt8p0/storage.admin/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_resourcemanager_folder_iam_member.kms_encrypter: Destroying... [id=b1gjfhtn0l2tui6nt8p0/kms.keys.encrypterDecrypter/serviceAccount:ajeb5npc22ncinfhbmea]
+yandex_storage_bucket.lakehouse: Destroying... [id=future20-lakehouse-vtseplyayev]
+yandex_compute_instance.bastion: Destroying... [id=fhmrsvlc547prbi7iqp3]
+yandex_compute_instance.platform["kafka"]: Destroying... [id=epd26jbir02i1giv8vg1]
+yandex_compute_instance.phi: Destroying... [id=fhmqdqdegrsblplb5fn1]
+yandex_compute_instance.platform["query-engine"]: Destroying... [id=fhmjh08j6f92e4r9cp5m]
+yandex_resourcemanager_folder_iam_member.platform_compute: Destruction complete after 4s
+yandex_resourcemanager_folder_iam_member.storage_admin: Destruction complete after 7s
+yandex_resourcemanager_folder_iam_member.kms_encrypter: Destruction complete after 9s
+yandex_compute_instance.bastion: Still destroying... [id=fhmrsvlc547prbi7iqp3, 10s elapsed]
+yandex_compute_instance.phi: Still destroying... [id=fhmqdqdegrsblplb5fn1, 10s elapsed]
+yandex_compute_instance.platform["kafka"]: Still destroying... [id=epd26jbir02i1giv8vg1, 10s elapsed]
+yandex_storage_bucket.lakehouse: Still destroying... [id=future20-lakehouse-vtseplyayev, 10s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still destroying... [id=fhmjh08j6f92e4r9cp5m, 10s elapsed]
+yandex_storage_bucket.lakehouse: Destruction complete after 13s
+yandex_iam_service_account_static_access_key.storage: Destroying... [id=aje5dohak58og8th786u]
+yandex_kms_symmetric_key.data: Destroying... [id=abjoo53u6cua096co7c0]
+yandex_iam_service_account_static_access_key.storage: Destruction complete after 0s
+yandex_iam_service_account.storage: Destroying... [id=ajeb5npc22ncinfhbmea]
+yandex_kms_symmetric_key.data: Destruction complete after 1s
+yandex_compute_instance.platform["query-engine"]: Still destroying... [id=fhmjh08j6f92e4r9cp5m, 20s elapsed]
+yandex_compute_instance.platform["kafka"]: Still destroying... [id=epd26jbir02i1giv8vg1, 20s elapsed]
+yandex_compute_instance.bastion: Still destroying... [id=fhmrsvlc547prbi7iqp3, 20s elapsed]
+yandex_compute_instance.phi: Still destroying... [id=fhmqdqdegrsblplb5fn1, 20s elapsed]
+yandex_iam_service_account.storage: Destruction complete after 9s
+yandex_compute_instance.platform["kafka"]: Still destroying... [id=epd26jbir02i1giv8vg1, 30s elapsed]
+yandex_compute_instance.phi: Still destroying... [id=fhmqdqdegrsblplb5fn1, 30s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still destroying... [id=fhmjh08j6f92e4r9cp5m, 30s elapsed]
+yandex_compute_instance.bastion: Still destroying... [id=fhmrsvlc547prbi7iqp3, 30s elapsed]
+yandex_compute_instance.phi: Destruction complete after 34s
+yandex_vpc_subnet.phi: Destroying... [id=e9bgu206l3tecm935r7h]
+yandex_vpc_security_group.phi: Destroying... [id=enp1pqhnnocucg67lnum]
+yandex_compute_instance.bastion: Destruction complete after 34s
+yandex_vpc_security_group.phi: Destruction complete after 1s
+yandex_vpc_subnet.phi: Destruction complete after 5s
+yandex_compute_instance.platform["kafka"]: Still destroying... [id=epd26jbir02i1giv8vg1, 40s elapsed]
+yandex_compute_instance.platform["query-engine"]: Still destroying... [id=fhmjh08j6f92e4r9cp5m, 40s elapsed]
+yandex_compute_instance.platform["kafka"]: Destruction complete after 47s
+yandex_compute_instance.platform["query-engine"]: Still destroying... [id=fhmjh08j6f92e4r9cp5m, 50s elapsed]
+yandex_compute_instance.platform["query-engine"]: Destruction complete after 58s
+yandex_iam_service_account.platform: Destroying... [id=ajeb32t2bh7vmsob8ubi]
+yandex_vpc_subnet.platform["ru-central1-a"]: Destroying... [id=e9bg2k912tonjrejcblo]
+yandex_vpc_subnet.platform["ru-central1-d"]: Destroying... [id=fl8de2uiahjehn2gan5v]
+yandex_vpc_subnet.platform["ru-central1-b"]: Destroying... [id=e2ln3sjfocss3nu5qe1q]
+yandex_compute_disk.platform_data["query-engine"]: Destroying... [id=fhmj2l2sgvu816qg2hav]
+yandex_compute_disk.platform_data["kafka"]: Destroying... [id=epdrsregeq6ca077jad3]
+yandex_vpc_security_group.platform: Destroying... [id=enpr8eco5rjdl2mmljbn]
+yandex_vpc_security_group.platform: Destruction complete after 0s
+yandex_vpc_security_group.bastion: Destroying... [id=enpaipso2lkdci6d70hg]
+yandex_vpc_security_group.bastion: Destruction complete after 1s
+yandex_vpc_subnet.platform["ru-central1-d"]: Destruction complete after 1s
+yandex_vpc_subnet.platform["ru-central1-b"]: Destruction complete after 3s
+yandex_compute_disk.platform_data["kafka"]: Destruction complete after 3s
+yandex_vpc_subnet.platform["ru-central1-a"]: Destruction complete after 4s
+yandex_vpc_route_table.nat: Destroying... [id=enp4nfdmlcepnla5jpa2]
+yandex_vpc_route_table.nat: Destruction complete after 1s
+yandex_vpc_network.main: Destroying... [id=enpq7e514cdqm60ef5eg]
+yandex_vpc_gateway.nat: Destroying... [id=enpkq1fcc9pei84nn11p]
+yandex_compute_disk.platform_data["query-engine"]: Destruction complete after 5s
+yandex_vpc_gateway.nat: Destruction complete after 0s
+yandex_vpc_network.main: Destruction complete after 1s
+yandex_iam_service_account.platform: Destruction complete after 8s
+
+Destroy complete! Resources: 24 destroyed.
