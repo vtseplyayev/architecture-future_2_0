@@ -1,0 +1,24 @@
+#cloud-config
+# Минимальная первичная настройка узлов.
+# Прикладное ПО ставится отдельным слоем конфигурационного управления,
+# Terraform отвечает только за инфраструктуру.
+
+package_update: true
+package_upgrade: false
+
+packages:
+  - chrony
+  - curl
+  - jq
+
+write_files:
+  - path: /etc/sysctl.d/99-platform.conf
+    content: |
+      # Узлы платформы данных держат много открытых соединений
+      net.core.somaxconn = 4096
+      vm.max_map_count = 262144
+    permissions: "0644"
+
+runcmd:
+  - [systemctl, enable, --now, chrony]
+  - [sysctl, --system]
